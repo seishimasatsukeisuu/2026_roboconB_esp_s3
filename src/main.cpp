@@ -62,7 +62,7 @@ const int16_t PWM_LIMIT = 2999; // pwmの最大値
 // 守屋さんpid
 PositionPID pid_x(0.6, 0.2, 0.05, -PWM_LIMIT, PWM_LIMIT, -1000, 1000, 150.0);
 PositionPID pid_y(0.6, 0.2, 0.05, -PWM_LIMIT, PWM_LIMIT, -1000, 1000, 150.0);
-PositionPID pid_theta(200.0, 15.0, 2.0, -PWM_LIMIT, PWM_LIMIT, -900, 900, 0.15);
+PositionPID pid_theta(175.0, 20.0, 2.0, -PWM_LIMIT, PWM_LIMIT, -900, 900, 0.15);
 
 const int16_t AUTO_PWM_LIMIT = 2999;
 
@@ -75,7 +75,7 @@ float auto_ay = 0.0f;
 
 // 加速度制限(mm/s^2)
 const float AUTO_MAX_V = 600.0f;
-const float AUTO_ACCEL = 2000.0f;
+const float AUTO_ACCEL = 1750.0f;
 const float AUTO_DECEL = 1800.0f; // 減速
 const float AUTO_JERK = 40000.0f; // mm/s^3
 
@@ -112,8 +112,8 @@ constexpr float FRICTION_OFFSET = 30.0f;
 const long CONTROL_CYCLE = 20000;
 const float dt = CONTROL_CYCLE * 1.0e-6f;
 
-// ESP-NOW送信周期：100ms
-const unsigned long ESP_NOW_TX_CYCLE = 100000;
+// ESP-NOW送信周期：50ms
+const unsigned long ESP_NOW_TX_CYCLE = 50000;
 unsigned long last_esp_now_tx = 0;
 
 // マニュアル移動モード
@@ -520,7 +520,7 @@ void loop()
     prev_count_3 = count_3;
     prev_count_4 = count_4;
 
-    // printf("count1 = %d, count2 = %d, count3 = %d\n", count_1, count_2, count_3);
+    printf("count1 = %d, count2 = %d, count3 = %d, count4 =%d\n", count_1, count_2, count_3, count_4);
 
     float s1 = dc1 * mm_per_count;
     float s2 = dc2 * mm_per_count;
@@ -666,7 +666,7 @@ void loop()
 
       constexpr float INV_SQRT2 = 0.70710678f;
       float drive_gain = 10.0f;
-      float rot_gain = 20.0f; // まずは8から10へ
+      float rot_gain = 20.0f;
 
       float v1 = (-vx + vy) * INV_SQRT2 * drive_gain + rot * rot_gain;
       float v2 = (vx + vy) * INV_SQRT2 * drive_gain + rot * rot_gain;
